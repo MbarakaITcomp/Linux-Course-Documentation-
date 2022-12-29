@@ -1,0 +1,10 @@
+                            ### For File & Backup Transfert ###
+
+Tools : 
+
+    - $ftp ---> interactive way (requires vsftpd)
+    - $scp  -----> standalone cmd (uses ssh)
+    - $rsync -----> usefull for backups (uses ssh)
+        - explain : 
+            - at the first time : sends All the Dir OR File 
+            - at the second time : sends only updates not all the file again

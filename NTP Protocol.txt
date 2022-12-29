@@ -1,0 +1,18 @@
+                                        ### NTP Protocol ###
+
+Configuration File : 
+
+    - /etc/ntp.conf
+
+Start The Deamon Service : 
+
+    - $systemctl start ntpd
+
+Check if service is running : 
+
+    - $ps -ef | grep ntp
+
+ntp interactive cli : 
+
+    - $ntpq
+    - ntp commands : $peers  ----> servers u're connected to

@@ -1,0 +1,274 @@
+Kernel Functions : 
+
+ Managing the machine's memory and allocating it to each process. 
+ Scheduling the work done by the CPU so that the work of each user is carried out as efficiently as is possible. 
+ Accomplishing the transfer of data from one part of the machine to another 
+ Interpreting and executing instructions from the shell 
+ Enforcing file access permissions
+
+Linux Kernel : 
+ 
+ Process management
+ Memory management
+ Hardware device drivers
+ Filesystem drivers
+ Network management
+ Various other bits and pieces
+
+
+OS functions : 
+
+ In a multitasking operating system where multiple programs can be running at the same time, 
+the operating system determines which applications should run in what order and how much 
+time should be allowed for each application before giving another application a turn.
+ It manages the sharing of internal memory among multiple applications.
+ It handles input and output to and from attached hardware devices, such as hard disks, printers, 
+and dial-up ports. 
+ It sends messages to each application or interactive user (or to a system operator) about the status 
+of operation and any errors that may have occurred.
+ It can offload the management of what are called batch jobs (for example, printing) so that the 
+initiating application is freed from this work.
+ On computers that can provide parallel processing, an operating system can manage how to 
+divide the program so that it runs on more than one processor at a time.
+
+
+OS Programs & Kernel : 
+
+-UNIX and 'UNIX-like' operating systems (such as Linux) consist of a kernel and some system programs. 
+There are also some application programs for doing work. The kernel is the heart of the operating system. 
+In fact, it is often mistakenly considered to be the operating system itself, but it is not. An operating 
+system provides many more services than a plain kernel.
+It keeps track of files on the disk, starts programs and runs them concurrently, assigns memory and other 
+resources to various processes, receives packets from and sends packets to the network, and so on. The 
+kernel does very little by itself, but it provides tools with which all services can be built. It also prevents 
+anyone from accessing the hardware directly, forcing everyone to use the tools it provides. This way the 
+kernel provides some protection for users from each other. The tools provided by the kernel are used via 
+system calls. 
+The system programs use the tools provided by the kernel to implement the various services required 
+from an operating system. System programs, and all other programs, run `on top of the kernel', in what is 
+called the user mode. The difference between system and application programs is one of intent: 
+applications are intended for getting useful things done (or for playing, if it happens to be a game), 
+whereas system programs are needed to get the system working. A word processor is an application; 
+mount is a system program. The difference is often somewhat blurry, however, and is important only to 
+compulsive categorizers.
+
+
+
+Links (persist on remove): 
+
+- Soft Links : like shortcuts ---> points to sourcefile --which--> points to data stored in the storage device ( no data on src removing)
+- Hard Links : points directly to data stored in the storage device ( data persistance on src removing)
+
+
+                                                    ### Commands Store ###
+
+
+ACLs ( Access list Control):
+
+    - Add Permission to a User : $setfacl -m u:{user}:rwx /path/to/file
+
+
+Tar :
+
+    - $tar cvf {tar_file} files_to_tar
+
+Extract Tar : 
+
+    - $tar xvf {tar_file}
+
+gzip : 
+
+    - $gzip {tar_file}
+
+
+sed : 
+    // This not for a permenant change :
+    - $sed 's/str_to_replace/replacement/{g}' file_name
+    // g ---> stands for global pattern matching
+
+    // for a permenant change : 
+    - $sed -i 's/str_to_replace/replacement/' file_name
+
+
+
+User management : 
+
+    - $useradd : add a user - options : {-g=group / -s=shell / -m=home_dir / -p=password}
+    - $userdel : delete a user 
+    - $usermod : modify a user
+
+
+
+Login Aging : 
+
+    - file location : /etc/login.defs
+    - Useful Params : 
+        - PASS_MAX_DAYS	99999
+        - PASS_MIN_DAYS	0
+        - PASS_WARN_AGE	7
+        - UID_MIN 1000
+        - UID_MAX 60000
+        - UMASK 077 /// Permission when the user creates files
+        ....
+
+chage : // change user password expiry information
+
+    - $chage options{-m=Min_days / -M=Max_day ---> to change the password / -W=warning / -I=Inactif_Acc_after_pwd_expire}
+
+
+Monitor users : tcp
+
+    - $who /// Print information about users who are currently logged in {date,terminal,processes,boot_time}
+        
+        - Some options : -q=all login names and number of users logged on
+
+    - $last /// prints logging  and shutdown/reboot history of users
+    
+        - Some options : -w=Display full user names and domain names / -x=Display the system shutdown entries and run level changes.
+            - ex : $ last | more 
+
+    - $w  /// same as who with more details
+    - $finger /// powerfull program to track users
+
+
+Talk to users : 
+
+    - $wall // Broadcast message to all users 
+    - $write {user_name}  // unicast message to specified user
+
+
+
+                                                             ### System part ###
+
+
+Note : 
+    - Process : got an end
+    - Deamon : service/process wich runs in the backround continuously [firewalld.service] (identifyed by letter d at the end of the file_name)
+
+
+Services management : 
+
+    - $systemctl options{start,stop,status,restart,reload,enable(at boot),disable}
+    - $systemctl list-unit
+
+Process Informations : 
+
+    - $ps options{-aux'=all infos / -ef= as aux with full format} user_name
+
+
+Note : 
+    - $at is similar to crontab except that it's a one time scheduling cmd
+
+    - $nice -n {value(smaller the better)} ProcessName
+    - $renice [value] -p 'PID'
+
+
+System Monitoring : 
+
+    - $df options{-h=humain readble} /// report file system disk usage
+    - $du -sh {dir} : gives the occupied disk space by the dir provided
+    - $dmesg /// examine or control the kernel components ( devices , error,memory,....)
+    - $iostat /// to monitor input/output 
+    - $netstat options{-rnv = kernel routing table }
+    - $top ---> like ps but in real time & sorts by cpu usage
+    - $free options{-g = display in gigabytes }/// Display amount of free and used memory in the system
+    - /proc/ Directory  ---> this folder has all system infos 
+        - $cat /proc/[cpuonfo-meminfo]
+
+    - /var/log/ Directory  ---> this folder has all system logs
+    - /etc/redhat-release ----> this file provides os version
+    - $uname -a ----> OS infos
+    - $dmidecode ----> Provides every infos about the hardware
+
+Network Monitoring : 
+
+    - $tcpdump  options{-i=interface_name}-----> Network Traffic in real time 
+    - $ethtool {interface_name}   -------> NIC Informations
+    - $ip address show
+    - $dig ------> dns lookup utility
+    - $nslookup  ----> preform dns/reversedns queries  
+
+    Network Utilities : 
+
+        - $nmtui ----> desactivate/activate a connection - edit Interfaces - edit hostname - show Interfaces Infos
+        - $nmcli  ----> cli for network editing 
+        - $nm-connection-editor   -----> gui for connection editng (ip,name,.....)
+
+
+System Maintenance :
+
+    - $shutdown // shut down system
+    - $init 
+    - $reboot
+    - $halt /// forcing immediate shutdown
+    - $hostnamectl set-hostname {new_host_name} ( shell reboot needed)
+    - $timedatectl ----> provides infos about time, date, timezone,....
+    - $timedatectl set-time 'YYYY-MM-DD XX:XX:XX' -----> to set time
+    - $timedatectl set-ntp true ----> to activate ntp service
+
+
+    - For Certificat at OS level : 
+        - $cp path/to/certificat /etc/pki/ca-trust/source/anchors/
+        - $sudo upda te-ca-trust
+
+Report & Support :
+
+    - $sosreport  -----> redhat special report to send to support representative
+
+
+
+shell history :
+
+    - history file : /home/{user}/.bash_history
+    - $history /// to view your commands history
+    - $!{cmd_history_number} // to re execute a cmd 
+
+
+
+Package installation : 
+
+    - Minor version :
+
+        - $yum install {package name} options{-y=yes for every qstn} : download + installation of packages (requires internet connection)
+            File Location of remote repos : /etc/yum.repos.d
+            Configuration file : /etc/yum.config
+
+        - $rpm (redhat package manager): installation/removal of local packed tha has been downloaded befor ! ( no internet connection required)
+        - $rpm -qa ----> get all installed packages
+        - $rpm -qi {package name} ----> get informations about the package
+        - $rpm -qf [path_to_command]  -----> provides infos abourt the package responsible for this command
+
+
+System Update :
+
+    - Minor version : 
+
+        - $yum update/upgrade options{-y=yes for every qstn}
+        - upgrade : delete old packages
+        - update : Preserve old packages
+
+
+Rolling Back : 
+
+    - A Package : 
+
+        - $yum history undo {package_id---> got from $yum history}
+
+    - An Update : 
+        - it is not recommended to roll back an update or upgrade ----> might cause instability in the system (redhat recommendation)
+        - $yum history undo {package_id---> got from $yum history}
+
+
+Mail Sending (sendmail package) : 
+
+    -Installation : 
+
+        -install sendmail package
+        -install sendmail-cf package
+
+    - Files : 
+            ## comments starts with {dnl} keyword 
+        -/etc/mail/sendmail.mc ( mail Configuration) --> to be compiled
+        -/etc/mail/sendmail.cf (configuration file)
+
+    

@@ -1,0 +1,12 @@
+
+                                                ### Network Related ###
+/etc/nsswitch.
+/etc/hostname
+/etc/sysconfig/network
+/etc/sysconfig/network-scripts/ifcfg-nic
+
+
+                                                ### DNS Related ###
+
+/etc/hosts
+

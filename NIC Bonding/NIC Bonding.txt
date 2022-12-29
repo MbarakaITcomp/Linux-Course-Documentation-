@@ -1,0 +1,24 @@
+                                    ### NIC Bonding ( Interfaces Aggregation) ###
+
+Steps to follow : 
+
+    - $modprobe bonding
+    - $modinfo bonding
+
+    - Create /etc/sysconfig/network-scripts/ifcfg-bond0  : $vi /etc/sysconfig/network-scripts/ifcfg-bond0
+                DEVICE=bond0
+                TYPE=Bond
+                NAME=bond0
+                BONDING_MASTER=yes
+                BOOTPROTO=none
+                ONBOOT=yes
+                IPADDR=192.168.1.80
+                NETMASK=255.255.255.0
+                GATEWAY=192.168.1.1
+                BONDING_OPTS=”mode=5 miimon=100”
+    
+    - Edit /etc/sysconfig/network-scripts/{interface1}   : 
+    - Edit /etc/sysconfig/network-scripts/{interface2}
+
+    - $systemctl restart network
+                        
