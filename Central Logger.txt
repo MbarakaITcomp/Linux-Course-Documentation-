@@ -1,0 +1,25 @@
+                                        ### Central Logger ###
+
+Rsyslog is a free and opensource logging utility that exists by default on  CentOS 8 and RHEL 8 systems. 
+It provides an easy and effective way of centralizing logs from client nodes to a single central server. 
+The centralization of logs is beneficial in two ways. First,  it simplifies viewing of logs as the Systems 
+administrator can view all the logs of remote servers from a central point without logging into every client system 
+to check the logs. This is greatly beneficial if there are several servers that need to be monitored and secondly, 
+in the event that a remote client suffers a crash, you need not worry about losing the logs because all the logs will 
+be saved on the central rsyslog server. Rsyslog has replaced syslog which only supported UDP protocol. It extends 
+the basic syslog protocol with superior features such as support for both UDP and TCP protocols in transporting logs, 
+augmented filtering abilities, and flexible configuration options.
+
+
+
+Configuration File Location : 
+
+    - /etc/rsyslog.conf
+
+Log Files Location : 
+
+    - /var/log/
+
+To Access, Manage, Extract Logs : 
+
+    - $journalctl 

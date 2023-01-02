@@ -99,11 +99,12 @@ User management :
 
 
 
-Login Aging : 
+Login Aging ( Important for Sec Issues) : 
 
     - file location : /etc/login.defs
     - Useful Params : 
         - PASS_MAX_DAYS	99999
+        - PASS_MIN_LEN 8
         - PASS_MIN_DAYS	0
         - PASS_WARN_AGE	7
         - UID_MIN 1000
@@ -114,6 +115,7 @@ Login Aging :
 chage : // change user password expiry information
 
     - $chage options{-m=Min_days / -M=Max_day ---> to change the password / -W=warning / -I=Inactif_Acc_after_pwd_expire}
+    - $chage -l {user_name} : information about password (expire, max length, ....)
 
 
 Monitor users : tcp
@@ -179,6 +181,13 @@ System Monitoring :
     - /etc/redhat-release ----> this file provides os version
     - $uname -a ----> OS infos
     - $dmidecode ----> Provides every infos about the hardware
+    - $journalctl -xeu {service_name} -----> provides logs on status of the service 
+    - $stat {file_name} -----> infos about owner, last access and modification,.... .
+    
+    - Graphical Interface : 
+
+        - $cockpit 
+
 
 Network Monitoring : 
 
@@ -187,6 +196,10 @@ Network Monitoring :
     - $ip address show
     - $dig ------> dns lookup utility
     - $nslookup  ----> preform dns/reversedns queries  
+
+    To See active ports on the system : 
+
+        - $netstat -tunlp -----> to see services & their listening on ports (provides the IPs also ....)
 
     Network Utilities : 
 
@@ -206,6 +219,13 @@ System Maintenance :
     - $timedatectl set-time 'YYYY-MM-DD XX:XX:XX' -----> to set time
     - $timedatectl set-ntp true ----> to activate ntp service
 
+    - For Firewall Maintenance : 
+        - firewalld vs iptables : 1\ firewalld's allows the simultaneous effecting of changes in runtime without having to reboot the system 
+                                  2\  Firewalld is XML based and runs iptables under its hood together with its own command line and configuration file
+                                    
+        - $firewall-config  ----> to bring a Gui for firewall configuration 
+        - $firewall-cmd  -----> to bring a cmd for firewall configuration 
+
 
     - For Certificat at OS level : 
         - $cp path/to/certificat /etc/pki/ca-trust/source/anchors/
@@ -217,7 +237,7 @@ Report & Support :
 
 
 
-shell history :
+Shell history :
 
     - history file : /home/{user}/.bash_history
     - $history /// to view your commands history
@@ -237,6 +257,9 @@ Package installation :
         - $rpm -qa ----> get all installed packages
         - $rpm -qi {package name} ----> get informations about the package
         - $rpm -qf [path_to_command]  -----> provides infos abourt the package responsible for this command
+        - $rpm -e {package name} -----> to delete a package 
+
+            *** Note : we must be careful when deleting a package ---> it might be dependent on another one !!
 
 
 System Update :

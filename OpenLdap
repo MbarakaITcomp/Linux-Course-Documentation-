@@ -1,0 +1,10 @@
+                                        ### OpenLdap Protocol ###
+
+
+Service name : 
+
+    - slapd
+
+Configuration File Location : 
+
+    - /etc/openldap/slapd.d

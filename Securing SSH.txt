@@ -1,0 +1,23 @@
+                                        ### SSH Securing ###
+
+
+Configuration File Location : 
+
+    - /etc/ssh/sshd_config
+
+
+Things To keep in Mind ( Sensible Parameter to edit) : 
+
+    - Port Number Changing : 
+        - From 22 to an unusual one {ex : 5080}
+
+    - user Intervals : 
+
+        - {ClientAliveInterval} {time_in_second}  -----> once the interval passed : user is automatically logged out
+        - {ClientAliveCountmax}
+                            
+    - Login : 
+
+        - {PermitRootLogin} {yes/no} ------> to permit/prohib ssh's root Login
+        - {PermitEmptyPasswords} {yes/no}  ----> ysers with no passwords won't be able to connect througth ssh
+        - {AllowUsers} {users} ----> allow only specific users to connect througth ssh

@@ -1,0 +1,17 @@
+                                        ### HTTPD Protocol ###
+
+Configuration File Location : 
+
+    - /etc/httpd/conf/httpd.conf
+
+Root Document : 
+
+    - /var/www/html/
+
+To Run The Server : 
+
+    - Listening Port Modification : 
+        - Change port to one of this : {80, 81, 443, 488, 8008, 8009, 8443, 9000} (ports allowed by SELinux by default)
+        OR 
+        - add desired port to se ACLs : $semanage port -a -t http_port_t -p tcp
+            
