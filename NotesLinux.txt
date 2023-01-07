@@ -188,6 +188,12 @@ System Monitoring :
 
         - $cockpit 
 
+    - Processes Priority types : 
+            1\ system priority (PR) ( [0 to 139]  0 to 99 --> for real time process & 99 to 139 for users ) : is the actual priority for linux kernel to use
+            2\ nice (cmd) priority (NI) ( [-20 to 20]  0 --> is default )  : is a user space priority
+
+
+
 
 Network Monitoring : 
 
@@ -219,6 +225,15 @@ System Maintenance :
     - $timedatectl set-time 'YYYY-MM-DD XX:XX:XX' -----> to set time
     - $timedatectl set-ntp true ----> to activate ntp service
 
+    - For Storage : 
+        - /etc/fstab  -----> it contains a list of disks used at startup and the partitions of those disks. For each partition, it indicates how it will be used and integrated into the global file system tree.
+        - When Adding a Disk : 
+            - $fdisk -l ----> to verify its there (list all disks)
+            - $fdisk /dev/{disk [sdb,....]}  ------> to create new partition of the disk    ( hit w at the end to write your modifications from ram to disk)
+            - $mkfs.{the_file_sys}   ----> to create a file system for the partition
+            - $mount {disk_partition}
+
+
     - For Firewall Maintenance : 
         - firewalld vs iptables : 1\ firewalld's allows the simultaneous effecting of changes in runtime without having to reboot the system 
                                   2\  Firewalld is XML based and runs iptables under its hood together with its own command line and configuration file
@@ -230,6 +245,15 @@ System Maintenance :
     - For Certificat at OS level : 
         - $cp path/to/certificat /etc/pki/ca-trust/source/anchors/
         - $sudo upda te-ca-trust
+
+
+    - System Run Levels {0...6} : 
+        - $init {run_level} ---> execute the run level cmd or brings to that run level
+        - $who - r -----> what run level u're in 
+
+        - Run Level Files are in : /etc/rc.d/*
+
+
 
 Report & Support :
 
