@@ -93,7 +93,7 @@ sed :
 
 User management : 
 
-    - $useradd : add a user - options : {-g=group / -s=shell / -m=home_dir / -p=password}
+    - $useradd : add a user - options : {-g=group / -s=shell / -m=home_dir }
     - $userdel : delete a user 
     - $usermod : modify a user
 
@@ -156,7 +156,29 @@ Services management :
 Process Informations : 
 
     - $ps options{-aux'=all infos / -ef= as aux with full format} user_name
+        - example : $ps -eo 'user,pid,nice,cmd'
+        
+        - Process State Code : 
+          
+                        D    uninterruptible sleep (usually IO)
+                        R    running or runnable (on run queue)
+                        S    interruptible sleep (waiting for an event to complete)
+                        T    stopped by job control signal
+                        t    stopped by debugger during the tracing
+                        W    paging (not valid since the 2.6.xx kernel)
+                        X    dead (should never be seen)
+                        Z    defunct ("zombie") process, terminated but not reaped by its parent
 
+                For BSD formats and when the stat keyword is used, additional
+                characters may be displayed:
+
+                        <    high-priority (not nice to other users)
+                        N    low-priority (nice to other users)
+                        L    has pages locked into memory (for real-time and custom IO)
+                        s    is a session leader
+                        l    is multi-threaded (using CLONE_THREAD, like NPTL pthreads
+                                do)
+                        +    is in the foreground process group 
 
 Note : 
     - $at is similar to crontab except that it's a one time scheduling cmd
@@ -184,6 +206,16 @@ System Monitoring :
     - $journalctl -xeu {service_name} -----> provides logs on status of the service 
     - $stat {file_name} -----> infos about owner, last access and modification,.... .
     
+
+
+    - Memory Monitoring : 
+        - $swapon -s -----> list swap devices
+        - $vmstat -----> monitoring virtual memory? swap, paging
+        - File for Info (paging , virtual memory,....) : 
+            - /proc/<pid>/smaps  ( rss property ----> how much paging is in physical ram) -----> infos about all memory segments
+            - /proc/meminfo 
+
+
     - Graphical Interface : 
 
         - $cockpit 

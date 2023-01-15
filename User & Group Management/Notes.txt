@@ -1,0 +1,26 @@
+                                        ### Notes User & Group management ###
+
+useradd -d home -e expire -f inactive -g group -G groups -m -s shell -u uid username
+
+Only the final argument (username), which specifies the login name, is required
+
+    - Options : 
+
+        -d home Specifies the user’s home directory.
+
+        -e expire Specifies the expiration date of the account. Specified as mm/dd/yy.
+
+        -f inactive Specifies the number of days after password expiration that the account is disabled. The default value, -1, prevents the account from being disabled.
+
+        -g group Specifies the user’s home group name or number. The default value is 100. Used with the –n flag.
+
+        -G groups A comma-separated list of group names or numbers, specifying supplementary groups of which the user is to be made a member.
+
+        -m Specifies that the user’s home directory is to be automatically created.
+
+        -n Specifies that no private user group should be created.
+
+        -s shell Specifies the user’s shell. If not specified, the system will launch the default shell when the user logs in.
+
+        -u uid The numerical ID of the user. If not specified, the system chooses the next available user ID.
+                            
