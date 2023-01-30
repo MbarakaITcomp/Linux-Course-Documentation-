@@ -78,7 +78,7 @@ Extract Tar :
 
 gzip : 
 
-    - $gzip {tar_file}
+    - $gzip options{-k=keep input files,-d=decompress,} {tar_file}
 
 
 sed : 
@@ -96,6 +96,8 @@ User management :
     - $useradd : add a user - options : {-g=group / -s=shell / -m=home_dir }
     - $userdel : delete a user 
     - $usermod : modify a user
+    - $gpasswd : add,remove user from a group
+
 
 
 
@@ -199,7 +201,22 @@ System Monitoring :
     - /proc/ Directory  ---> this folder has all system infos 
         - $cat /proc/[cpuonfo-meminfo]
 
-    - /var/log/ Directory  ---> this folder has all system logs
+    - logs : 
+            - /etc/rsyslog.conf  | /etc/rsyslog.d.conf  ----> configuration files 
+            - /var/log/ Directory  ---> this folder has all system logs
+
+                    /var/log/messages  : Most syslog messages are logged here. The exceptions are messages related to authentication and email processing, that periodically run jobs, and those which are purely debugging related.
+                    /var/log/secure The log file for security and authentication-related messages and errors.
+                    /var/log/maillog The log file with mail server-related messages.
+                    /var/log/cron The log file related to periodically executed tasks.
+                    /var/log/boot.log Messages related to system startup are logged here.
+            
+            - Test rsyslog  ----> logger -p local7.notice "Log entry created on serverX"
+
+            - $journalctl options{-b-->last_boot_time, -n=number_of_line, -p=priority, --since="date" , --until "date", -o=verbose} ----> shows the full system journal, starting with the oldest log entry, when run as root user
+                    - $man systemd.journal-fields  ----> commonly used journal fields
+
+
     - /etc/redhat-release ----> this file provides os version
     - $uname -a ----> OS infos
     - $dmidecode ----> Provides every infos about the hardware
@@ -229,6 +246,8 @@ System Monitoring :
 
 Network Monitoring : 
 
+                    --- /etc/sysconfig/network-scripts/ifcfg-<interface_name>
+
     - $tcpdump  options{-i=interface_name}-----> Network Traffic in real time 
     - $ethtool {interface_name}   -------> NIC Informations
     - $ip address show
@@ -245,6 +264,18 @@ Network Monitoring :
         - $nmcli  ----> cli for network editing 
         - $nm-connection-editor   -----> gui for connection editng (ip,name,.....)
 
+    socket statistics ( service,port,..): 
+                --- same as netstat ---
+        -$ss -pta  -----> all tcp sockets with their services
+
+                - Options : 
+                        -n Show numbers instead of names for interfaces and ports.
+                        -t Show TCP sockets.
+                        -u Show UDP sockets.
+                        -l Show only listening sockets.
+                        -a Show all (listening and established) sockets.
+                        -p Show the process using the sockets.
+
 
 System Maintenance :
 
@@ -258,12 +289,26 @@ System Maintenance :
     - $timedatectl set-ntp true ----> to activate ntp service
 
     - For Storage : 
-        - /etc/fstab  -----> it contains a list of disks used at startup and the partitions of those disks. For each partition, it indicates how it will be used and integrated into the global file system tree.
+
+            - (MBR) vs (GPT)  : 
+                    - MBR : 4 primary partitions or 3 primary + 1 extended (logical volums)
+                    - GPT : up-to 128 primary partitions + more features ...
+
+        - /etc/fstab  -----> it contains a list of disks used at startup and the partitions of those disks. For each partition,
+    it indicates how it will be used and integrated into the global file system tree.
+
         - When Adding a Disk : 
             - $fdisk -l ----> to verify its there (list all disks)
-            - $fdisk /dev/{disk [sdb,....]}  ------> to create new partition of the disk    ( hit w at the end to write your modifications from ram to disk)
-            - $mkfs.{the_file_sys}   ----> to create a file system for the partition
-            - $mount {disk_partition}
+            - $fdisk /dev/{Disk}  ------> tool (cmd) to create new partition of the disk
+            - $partprobe ----> for informing the kernel about table changes
+    ( hit w at the end to write your modifications from ram to disk)
+            - $mkfs.{the_file_system} {disk_partition}  ----> to create a file system for the partition
+            - $mount {disk_partition} ----> mount disk ( not persistant !)
+                    
+            - for a persistant way : 
+                - edit the /etc/fstab by adding new line for the partition :
+                    line structure : 
+                        { Device    Mount_Point    File_System_Type     Options(mount options if any)     Backup_Operation[0 --> for no backup]    File_System_Check_Order[0 --> for do not check fs] }
 
 
     - For Firewall Maintenance : 
@@ -350,4 +395,36 @@ Mail Sending (sendmail package) :
         -/etc/mail/sendmail.mc ( mail Configuration) --> to be compiled
         -/etc/mail/sendmail.cf (configuration file)
 
+
+    ############################### root password reseting #######################################
+
+        1\ reboot the system - at the grub menu press (e) key to Interrupt the boot process
+        2\ Edit kernel boot params :
+                - line 16 at the end add : rd.break
+                - [ctrl+x] ----> to start the system with the changed parameters
+        3\ When the switch prompt appears : 
+                - $mount -o rw,remount /sysroot ----> to remount the root filesystem wuth write permissions
+                - $chroot /sysroot  -----> change env to root 
+
+        4\ [sh-4.4#] prompt appears : $passwd to change password 
+        
+        5\ touch /.autorelabel ------> Enable the SELinux relabeling process on the next system boot
+
+        6\ exit
+
+
+    ############################### LVM #######################################"
+
+    Logical Volume Management : 
+            - could be done on a partition, full disk.
     
+    Steps to create lv : 
+         - Initialize the PV : 
+                   - $pvcreate {disk/partition}
+         - Volum Group ( VG ) Creation : 
+                   - $vgcreate {VG_Name} /dev/pv1 /dev/pv2 .....
+         - Logical Volum Creation :
+                   - $lvcreate -L {lv_size} -n {lv_name}  vg_name.
+
+Steps to Extend : 
+
