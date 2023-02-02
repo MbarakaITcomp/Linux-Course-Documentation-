@@ -244,7 +244,7 @@ System Monitoring :
 
 
 
-Network Monitoring : 
+################################## Network Monitoring : ##########################
 
                     --- /etc/sysconfig/network-scripts/ifcfg-<interface_name>
 
@@ -276,8 +276,44 @@ Network Monitoring :
                         -a Show all (listening and established) sockets.
                         -p Show the process using the sockets.
 
+############# Cheat sheet : 
 
-System Maintenance :
+        ip command:
+            - Display information about network interfaces:
+                - $ip addr show
+            - Display routing table:
+                - $ip route show
+            - Configure IP address for an interface:
+                - $ip addr add <ip_address>/<netmask> dev <interface_name>
+            - Remove IP address from an interface:
+                - $ip addr del <ip_address>/<netmask> dev <interface_name>
+
+    nmcli command:
+            - Display a list of all network interfaces:
+                - $nmcli device
+            - Display detailed information about a specific interface:
+                - $nmcli device show <interface_name>
+            - Connect to a Wi-Fi network:
+                - $nmcli device wifi connect <SSID> password <password>
+            - Modify network settings:
+                - $nmcli connection modify <connection_name> <setting_key> <setting_value>
+
+    nmtui command:
+            - Open the Network Manager Text User Interface:
+                - $nmtui
+            - Edit a network connection:
+                - $nmtui edit
+            - Activate a network connection:
+                - $nmtui activate
+            - Deactivate a network connection:
+                - $nmtui deactivate
+
+    systemctl command:
+            - Display the status of network services:
+                - $systemctl list-units --type=service | grep network
+
+
+################################ System Maintenance :
 
     - $shutdown // shut down system
     - $init 
@@ -290,9 +326,9 @@ System Maintenance :
 
     - For Storage : 
 
-            - (MBR) vs (GPT)  : 
-                    - MBR : 4 primary partitions or 3 primary + 1 extended (logical volums)
-                    - GPT : up-to 128 primary partitions + more features ...
+        - (MBR) vs (GPT)  : 
+                - MBR : 4 primary partitions or 3 primary + 1 extended (logical volums)
+                - GPT : up-to 128 primary partitions + more features ...
 
         - /etc/fstab  -----> it contains a list of disks used at startup and the partitions of those disks. For each partition,
     it indicates how it will be used and integrated into the global file system tree.
@@ -303,8 +339,9 @@ System Maintenance :
             - $partprobe ----> for informing the kernel about table changes
     ( hit w at the end to write your modifications from ram to disk)
             - $mkfs.{the_file_system} {disk_partition}  ----> to create a file system for the partition
-            - $mount {disk_partition} ----> mount disk ( not persistant !)
-                    
+            - $mount :
+                    - $mount {disk_partition} {mount_path}----> mount disk ( not persistant !)
+                    - $mount -a ----> to go througth all fstab file 
             - for a persistant way : 
                 - edit the /etc/fstab by adding new line for the partition :
                     line structure : 
@@ -417,14 +454,96 @@ Mail Sending (sendmail package) :
 
     Logical Volume Management : 
             - could be done on a partition, full disk.
-    
+            - to use a block device for LVM it must be initialized as physical Volume
+            - LVM DATA :
+                    - LVM label : it's placed in second 512bytes sector ( or first 4 sectors) and
+                        - it contains : random unique identifier (uuid) + size of block device(in bytes) 
+                        + metadata storage location
+                    - LVM Metadata : contains the configuration details of the LVM volume groups on your system
+                        - By default, an identical copy of the metadata is maintained in every metadata area in every
+                        physical volume within the volume group.
+                        - LVM metadata is small and stored as ASCII.
+            - Actual DATA : 
+                    - is stored after LVM label & Metadata 
+
     Steps to create lv : 
          - Initialize the PV : 
                    - $pvcreate {disk/partition}
          - Volum Group ( VG ) Creation : 
                    - $vgcreate {VG_Name} /dev/pv1 /dev/pv2 .....
          - Logical Volum Creation :
-                   - $lvcreate -L {lv_size} -n {lv_name}  vg_name.
+                   - $lvcreate -L size{M,G,..} -n {lv_name}  vg_name.
 
 Steps to Extend : 
+         - $vgextend vg_group pv_to_add
+         - $lvextend -L +size{M,G,..} -r(auto install fs) /dev/gv/lv
+
+    ######## cheat sheet :
+
+    lvcreate - create a logical volume
+        Options:
+            -L <size> : specify the size of the logical volume
+            -n <name> : specify the name of the logical volume
+            -p <permission> : set permission for the logical volume
+            -V <size> : specify the size of the logical volume in units
+    lvdisplay - display information about logical volumes
+
+        Options:
+            -v : display verbose information
+            -a : display information about all logical volumes
+
+    lvremove - remove a logical volume
+        Options:
+            -f : force removal of the logical volume
+
+    lvrename - rename a logical volume
+        Options:
+            -n <newname> : specify the new name of the logical volume
+
+    lvresize - resize a logical volume
+        Options:
+            -L <size> : specify the new size of the logical volume
+            -l <percentage> : specify the new size as a percentage of the current size
+            -r : resize the file system after resizing the logical volume
+
+    lvscan - scan for LVM logical volumes
+        Options:
+            -v : display verbose information
+
+    pvcreate - create a physical volume
+        Options:
+            -v : display verbose information
+            -f : force creation of the physical volume
+
+    pvdisplay - display information about physical volumes
+        Options:
+            -v : display verbose information
+            -a : display information about all physical volumes
+
+    pvremove - remove a physical volume
+        Options:
+            -f : force removal of the physical volume
+
+    pvresize - resize a physical volume
+        Options:
+            -v : display verbose information
+            -u : resize the physical volume to the size of the underlying disk
+
+    vgcreate - create a volume group
+        Options:
+            -n <name> : specify the name of the volume group
+            -s <size> : specify the physical extent size of the volume group
+
+    vgdisplay - display information about volume groups
+        Options:
+            -v : display verbose information
+            -a : display information about all volume groups
+
+    vgremove - remove a volume group
+        Options:
+            -f : force removal of the volume group
+
+    vgrename - rename a volume group
+        Options:
+            -n <newname> : specify the new name of the volume group
 
