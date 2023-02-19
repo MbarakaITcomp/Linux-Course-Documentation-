@@ -56,8 +56,13 @@ compulsive categorizers.
 
 Links (persist on remove): 
 
-- Soft Links : like shortcuts ---> points to sourcefile --which--> points to data stored in the storage device ( no data on src removing)
-- Hard Links : points directly to data stored in the storage device ( data persistance on src removing)
+    - Soft Links : like shortcuts ---> points to sourcefile --which--> points to data stored in the storage device ( no data on src removing)
+    - Hard Links : points directly to data stored in the storage device ( data persistance on src removing)
+
+    - $ln -s src_file dist_file  ---> for soft lik creation
+    - $ln src_file dist_file  ---> for hard lik creation
+
+
 
 
                                                     ### Commands Store ###
@@ -91,12 +96,25 @@ sed :
 
 
 
-User management : 
+######################################      User & group management :  ###############################
 
-    - $useradd : add a user - options : {-g=group / -s=shell / -m=home_dir }
-    - $userdel : delete a user 
-    - $usermod : modify a user
-    - $gpasswd : add,remove user from a group
+    - Creation & Edit & Delete : 
+
+        - $useradd {user_name} : add a user - options : {-g=primary_group / -s=shell / -m=home_dir / -G=secondary_groups}
+        - $userdel {user_name} : delete a user - options : {-r ---> remove all file & home dir}
+        - $usermod {user_name} : modify a user - options : {-L --> desable account / -s=shell / -m=home_dir / -G=secondary_groups}
+        - $passwd {user_name} : for initializing the account by setting up a password to it
+        - $gpasswd {user_name} : add,remove user from a group
+
+        - $groupadd : add a group 
+        - $groupdel : delete a group 
+
+    - Edit User Informations : 
+
+        - id {user_name} ----> print out user_id, p_group , s_groups 
+        - $chfn ----> change full name , office , phone number , ...
+        - $chsh ----> change default shell 
+
 
 
 
@@ -142,7 +160,7 @@ Talk to users :
 
 
 
-                                                             ### System part ###
+  ################################################## System part ##############################################
 
 
 Note : 
@@ -244,7 +262,7 @@ System Monitoring :
 
 
 
-################################## Network Monitoring : ##########################
+###################################################### Network Monitoring : ########################################################
 
                     --- /etc/sysconfig/network-scripts/ifcfg-<interface_name>
 
@@ -276,7 +294,7 @@ System Monitoring :
                         -a Show all (listening and established) sockets.
                         -p Show the process using the sockets.
 
-############# Cheat sheet : 
+#################################################### Cheat sheet : 
 
         ip command:
             - Display information about network interfaces:
@@ -313,7 +331,7 @@ System Monitoring :
                 - $systemctl list-units --type=service | grep network
 
 
-################################ System Maintenance :
+###################################################### System Maintenance : #####################################
 
     - $shutdown // shut down system
     - $init 
