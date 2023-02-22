@@ -65,7 +65,7 @@ Links (persist on remove):
 
 
 
-                                                    ### Commands Store ###
+################################################################################## Commands Store ###############################################################################################################################################
 
 
 ACLs ( Access list Control):
@@ -80,6 +80,10 @@ Tar :
 Extract Tar : 
 
     - $tar xvf {tar_file}
+
+Achrive & Compression at the same time : 
+
+    - $tar -cvzf tar_file.tar.gz files_to_tar
 
 gzip : 
 
@@ -101,10 +105,12 @@ sed :
     - Creation & Edit & Delete : 
 
         - $useradd {user_name} : add a user - options : {-g=primary_group / -s=shell / -m=home_dir / -G=secondary_groups}
-        - $userdel {user_name} : delete a user - options : {-r ---> remove all file & home dir}
+        - $userdel {user_name} : delete a user - options : {--remove ---> remove all file & home dir}
         - $usermod {user_name} : modify a user - options : {-L --> desable account / -s=shell / -m=home_dir / -G=secondary_groups}
         - $passwd {user_name} : for initializing the account by setting up a password to it
         - $gpasswd {user_name} : add,remove user from a group
+    --- Note ---
+            - default values used by useradd are located in : /etc/default/useradd
 
         - $groupadd : add a group 
         - $groupdel : delete a group 
@@ -282,6 +288,18 @@ System Monitoring :
         - $nmcli  ----> cli for network editing 
         - $nm-connection-editor   -----> gui for connection editng (ip,name,.....)
 
+        nmcli usefull cmds :
+
+            nmcli dev status	: Show the Network Manager status of all network interfaces
+            nmcli con show	: List all connections
+            nmcli con show : name List the current settings for the connection name
+            nmcli con add con-name {name} ..	: Add a new connection named name
+            nmcli con mod {name} ..	: Modify the connection name
+            nmcli con reload	: Tell networkManager to reread the configuration files (useful after they have been edited by hand)
+            nmcli con up {name}	: Activate the connection name
+            nmcli dev dis {dev}	: Deactivate and disconnect the current connection on the network interface dev
+            nmcli con del {name}	: Delete the connection name and its configuration file
+
     socket statistics ( service,port,..): 
                 --- same as netstat ---
         -$ss -pta  -----> all tcp sockets with their services
@@ -294,7 +312,7 @@ System Monitoring :
                         -a Show all (listening and established) sockets.
                         -p Show the process using the sockets.
 
-#################################################### Cheat sheet : 
+#################################################### Cheat sheet (networking): ###########################################
 
         ip command:
             - Display information about network interfaces:
