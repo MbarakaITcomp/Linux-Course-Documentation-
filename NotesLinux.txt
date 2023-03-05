@@ -109,6 +109,7 @@ sed :
         - $usermod {user_name} : modify a user - options : {-L --> desable account / -s=shell / -m=home_dir / -G=secondary_groups}
         - $passwd {user_name} : for initializing the account by setting up a password to it
         - $gpasswd {user_name} : add,remove user from a group
+        
     --- Note ---
             - default values used by useradd are located in : /etc/default/useradd
 
@@ -182,7 +183,11 @@ Services management :
 Process Informations : 
 
     - $ps options{-aux'=all infos / -ef= as aux with full format} user_name
-        - example : $ps -eo 'user,pid,nice,cmd'
+        - example : 
+                
+                - $ps -eo 'user,pid,nice,cmd'
+                - $ps -u {user} -----> print user's specific processes
+                - $ps aux --sort=-{%cpu,%mem} ----> sorting by cpu or mem time
         
         - Process State Code : 
           
@@ -475,6 +480,7 @@ Mail Sending (sendmail package) :
         2\ Edit kernel boot params :
                 - line 16 at the end add : rd.break
                 - [ctrl+x] ----> to start the system with the changed parameters
+                
         3\ When the switch prompt appears : 
                 - $mount -o rw,remount /sysroot ----> to remount the root filesystem wuth write permissions
                 - $chroot /sysroot  -----> change env to root 
@@ -489,6 +495,7 @@ Mail Sending (sendmail package) :
     ############################### LVM #######################################"
 
     Logical Volume Management : 
+
             - could be done on a partition, full disk.
             - to use a block device for LVM it must be initialized as physical Volume
             - LVM DATA :
@@ -501,6 +508,7 @@ Mail Sending (sendmail package) :
                         - LVM metadata is small and stored as ASCII.
             - Actual DATA : 
                     - is stored after LVM label & Metadata 
+
 
     Steps to create lv : 
          - Initialize the PV : 
@@ -522,6 +530,7 @@ Steps to Extend :
             -n <name> : specify the name of the logical volume
             -p <permission> : set permission for the logical volume
             -V <size> : specify the size of the logical volume in units
+
     lvdisplay - display information about logical volumes
 
         Options:
